@@ -149,6 +149,9 @@ defmodule Nostrum.Util do
       {:error, %{status_code: code, message: message}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
 
+      {:error, %HTTPoison.Error{reason: :timeout}} ->
+        raise("Authentication failed, timeout")
+
       {:ok, body} ->
         body = Poison.decode!(body)
 
