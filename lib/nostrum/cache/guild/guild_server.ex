@@ -55,6 +55,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     call(guild_id, {:select, fun})
   end
 
+  @spec select_mfa(Guild.id(), {module, atom, [any]}) :: any
+  def select_mfa(guild_id, mfa) do
+    call(guild_id, {:select_mfa, mfa})
+  end
+
   @doc false
   def delete(guild_id) do
     call(guild_id, {:delete})
@@ -126,6 +131,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   def handle_call({:select, fun}, _from, state) do
     {:reply, fun.(state), state, :hibernate}
+  end
+
+  def handle_call({:select_mfa, {m, f, a}}, _from, state) do
+    {:reply, apply(m, f, [state | a]), state, :hibernate}
   end
 
   def handle_call({:update, guild}, _from, state) do

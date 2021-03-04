@@ -119,6 +119,11 @@ defmodule Nostrum.Cache.GuildCache do
     select_by(%{id: id}, selector)
   end
 
+  @spec select_mfa(Guild.id(), {module, atom, [any]}) :: {:ok, any} | {:error, reason}
+  def select_mfa(id, {m, f, a}) do
+    select_by(%{id: id}, fn guild -> apply(m, f, [guild | a]) end)
+  end
+
   @doc ~S"""
   Same as `select/2`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
