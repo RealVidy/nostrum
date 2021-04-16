@@ -28,6 +28,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     end
   end
 
+  # TODO: Catch exits here
   @doc false
   def call(id, request) do
     with {:ok, pid} <- GuildRegister.lookup(id), do: GenServer.call(pid, request)
