@@ -152,6 +152,9 @@ defmodule Nostrum.Util do
       {:error, %HTTPoison.Error{reason: :timeout}} ->
         raise("Authentication failed, timeout")
 
+      {:error, %HTTPoison.Error{reason: :closed}} ->
+        raise("Authentication failed, connection closed")
+
       {:ok, body} ->
         body = Poison.decode!(body)
 
